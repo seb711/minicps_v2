@@ -1,4 +1,3 @@
-LATEST_VERSION = 1.1.3
 MININET = sudo mn
 
 PYTHON = sudo python
@@ -7,7 +6,7 @@ PYTHON_OPTS =
 # SWAT-S2 {{{1
 
 swat-s2-restart:
-	cd examples/swat-s2; ./restart.sh; cd ../..
+	cd examples/swat-s2; chmod +x ./restart.sh; ./restart.sh; cd ../..
 
 swat-s2:
 	cd examples/swat-s2; $(PYTHON) $(PYTHON_OPTS) run.py standard; cd ../..
