@@ -533,7 +533,7 @@ class PnioProtocolController(Protocol):
         IP = '--ip '  + device["address"] + ' '
         NAME = '-n '  + device["name"] + ' '
         DBNAME = '--dbname ' + PN_NAME + ' '
-        DBPATH = '--dbpath ../' + db_path + ' '
+        DBPATH = '--dbpath ../../' + db_path + ' '
 
         if sys.platform.startswith('linux'):
             SHELL = '/bin/bash -c '
