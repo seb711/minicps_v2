@@ -1,5 +1,4 @@
 sudo mn -c
-git pull
 sudo rm -r states/profinet_states/*
 sudo rm -r logs/*
 sudo rm -r swat_s2_db.sqlite

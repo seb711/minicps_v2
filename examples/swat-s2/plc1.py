@@ -24,9 +24,6 @@ class SwatPLC1(Controller):
             "[MiniNet Script] DEBUG: swat-s2 plc1 enters pre_loop at "
             + str(datetime.datetime.now())
         )
-        print
-        self.send(MV101_PLC, 1, PLC1_ADDR)
-        self.send_intercom(MV101_PLC, 1, PLC1_ADDR)
         time.sleep(sleep)
 
     def main_loop(self):
