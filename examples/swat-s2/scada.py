@@ -1,9 +1,6 @@
 """
 swat-s2 scada.py
 """
-import sys
-sys.path.insert(0, '../minicps')
-
 from minicps.devices import Scada
 from utils import PLC_PERIOD_SEC, SCADA_TAGS, SCADA_PROTOCOL, SCADA_VALUES
 from itertools import count
