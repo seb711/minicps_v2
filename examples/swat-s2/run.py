@@ -102,7 +102,7 @@ class SwatS2CPS(MiniCPS):
         s1.popen("sudo python ./startup_scripts/physical_process_starter.py &")
 
         time.sleep(4)
-        runX11(scada, "sudo python ./devices/scada.py")
+        runX11(scada, "sudo python scada.py")
 
         # SPHINX_SWAT_TUTORIAL RUN)
 
