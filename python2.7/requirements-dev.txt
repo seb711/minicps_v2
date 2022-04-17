@@ -1,6 +1,0 @@
-networkx
-cryptography
-pyasn1
-pymodbus
-cpppo
-twisted
