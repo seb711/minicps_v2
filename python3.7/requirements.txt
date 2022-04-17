@@ -1,0 +1,3 @@
+getmac
+netaddr
+numpy

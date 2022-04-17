@@ -469,7 +469,7 @@ class PnioProtocolController(Protocol):
 
         for (label, pid, type) in self._server['tags']:
             # TODO: CHECK IF TAG EXISTS IN PLCX_SERVER[DEVICES] DEFINITION
-            _db_path = "../states/profinet_states/profinet_device_" + label + "-" +  self._server['name'] + "-" + str(random.randint(1, 10000000000)) + ".sqlite"
+            _db_path = "./states/profinet_states/profinet_device_" + label + "-" +  self._server['name'] + "-" + str(random.randint(1, 10000000000)) + ".sqlite"
 
             SQLiteState._create(_db_path, PN_SCHEMA)
             SQLiteState._init(_db_path, PN_SCHEMA_INIT)      
@@ -604,7 +604,7 @@ class PnioProtocolDevice(Protocol):
         else:
             raise OSError
 
-        self._db_path = "../states/profinet_states/profinet_device_" +  self._server['name'] + "-" + str(random.randint(1, 10000000000)) + ".sqlite"
+        self._db_path = "./states/profinet_states/profinet_device_" +  self._server['name'] + "-" + str(random.randint(1, 10000000000)) + ".sqlite"
 
         SQLiteState._create(self._db_path, PN_SCHEMA)
         SQLiteState._init(self._db_path, PN_SCHEMA_INIT)      
