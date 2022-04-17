@@ -604,7 +604,7 @@ class PnioProtocolDevice(Protocol):
         else:
             raise OSError
 
-        self._db_path = "./states/profinet_states/profinet_device_" +  self._server['name'] + "-" + str(random.randint(1, 10000000000)) + ".sqlite"
+        self._db_path = "states/profinet_states/profinet_device_" +  self._server['name'] + "-" + str(random.randint(1, 10000000000)) + ".sqlite"
 
         SQLiteState._create(self._db_path, PN_SCHEMA)
         SQLiteState._init(self._db_path, PN_SCHEMA_INIT)      
@@ -662,7 +662,7 @@ class PnioProtocolDevice(Protocol):
         # print 'DEBUG: enip _start_server_cmd HTTP: ', HTTP
         IFACE = '-i ' + "%s-eth0"%(device_name) + ' '
         DBNAME = '-y ' + PN_NAME + ' '
-        DBPATH = '-x ../../' + db_path + ' '
+        DBPATH = '-x ../../../' + db_path + ' '
         PID = '-z ' + '1' 
 
         if sys.platform.startswith('linux'):
