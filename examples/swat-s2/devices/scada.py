@@ -1,13 +1,8 @@
 """
-swat-s1 scada.py
+swat-s2 scada.py
 """
-import datetime
-import time
-import csv
 from minicps.devices import Scada
-from utils import PLC_PERIOD_SEC, SCADA_TAGS, STATE, SCADA_PROTOCOL, SCADA_VALUES
-from utils import PP_PERIOD_SEC, PLC_SAMPLES
-from utils import PUMP_FLOWRATE_IN
+from utils import PLC_PERIOD_SEC, SCADA_TAGS, SCADA_PROTOCOL, SCADA_VALUES
 from itertools import count
 import pandas as pd
 import matplotlib.pyplot as plt
