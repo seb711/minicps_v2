@@ -9,7 +9,7 @@ swat-s2-restart:
 	cd examples/swat-s2; chmod +x ./restart.sh; ./restart.sh; cd ../..
 
 swat-s2:
-	$(PYTHON) $(PYTHON_OPTS) examples/swat-s2/run.py standard; cd ../..
+	cd examples/swat-s2; $(PYTHON) $(PYTHON_OPTS) run.py standard; cd ../..
 
 swat-s2-dcp-tamp:
 	cd examples/swat-s2; $(PYTHON) $(PYTHON_OPTS) run.py dcp_tampering; cd ../..
