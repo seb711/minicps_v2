@@ -39,6 +39,7 @@ Am Schluss sollte Python 3.7 asugewählt werden, um standardmäßig Python 3.7 z
 Um ```numpy``` zu installieren muss noch folgendes Paket zusätzlich installiert werden: 
 ```
 sudo apt-get install python3.7-dev
+pip3 install cython
 ```
 
 3. Außerdem wird in der ProfiNet-Simulation das Paket ```scapy``` verwendet. Da dieses aber über pip nicht alle notwendigen Drittpakete installiert, muss man es manuell über das Git-Repo installieren. Das geht wie folgt: 
@@ -54,8 +55,46 @@ sudo apt-get install sqlite3 libsqlite3-dev
 ```
 
 5. Zum Schluss wird noch der OVSTestcontroller für Mininet benötigt. Dieser lässt sich mit folgender Zeile installieren: 
-sudo apt-get install openvswitch-testcontroller
+```
+sudo apt-get install openvswitch-testcontroller bridge-utils
+```
 
 ## Installation von MiniCPS 2.0
  1. Klonen des Git-Repos zu MiniCPS 2.0
- 
+ 2. Installieren der Python-Pakete: 
+ ´´´
+ cd python3.7
+ pip3 install -r requirements.txt
+ cd ../python2.7
+ pip install -r requirements.txt
+ ´´´
+
+## Ausführen von MiniCPS Beispielprojekt Swat-S2
+
+Vor der ersten Ausführung muss das System initialisiert werden: 
+```
+make swat-s2-init
+```
+Vor/Nach jeder Ausführung sollte das System bereinigt werden mit: 
+```
+make swat-s2-clean
+```
+
+Das Standardsystem lässt sich ausführen mit; sollte nicht das gwünschte Verhalten entstehen, dann in den Logs nach möglichen Fehlern suchen (für jedes Gerät/Prozess wird ein eigener Log unter /logs angelegt): 
+```
+make swat-s2
+```
+
+Verschiedene Angriffe mit: 
+```
+make swat-s2-{dcp-tamp / rpc-tamp / dos}
+```
+
+Weitere Angriffe müssen zur Laufzeit gestartet werden. Dafür muss das System normal gestartet werden und im Anschluss die Angreiferhost-Shell über Xterm geöffnet werden mit: 
+```
+mininet > xterm attacker
+```
+Im Ordner ```attacks``` finden sich noch die Angriffe: 
+- ```replay.py``` (Replay-Attacke)
+- ```pnio-tampering.py``` (Tampering with Data und PNIO-Protocol)
+- ```forge.py``` (Forging-Attacke durch Einschleusen einer Alarmnachricht)

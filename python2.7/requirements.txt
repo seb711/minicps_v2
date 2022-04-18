@@ -4,6 +4,5 @@ pymodbus
 cpppo
 twisted
 pymodbus
-sqlite3
 matplotlib 
 pandas
