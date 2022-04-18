@@ -127,7 +127,7 @@ Angriffe, die den Verbindungsaufbau einer ProfiNet-Verbindung zwischen Feldgerä
 ```
 ### Während Datenaustausch
 Angriffe, die während des Verbindungsaustauschs sind, müssen vom Anwender manuell gestartet werden. Hierfür öffnet über die MiniNet-Shell ein Xterm-Shellfenster auf dem Angreiferhost. Über dieses kann er die folgenden Angriffe ausführen: 
-- <b>Forging</b>: Beim Forging wird an die Steuerung eine PNIO-Alarmnachricht versendet, dass der Watchdog-Timer des IO-Devices abgelaufen ist und dieses nun in den IDLE-Zustand übergegangen ist. Es wird also eine Nachricht zum scheinbaren Verbindungsabbruch versendet. Für diesen Angriff muss allerdings die Scapy-Bibliothek leicht geändert werden, da sonst keine Payload der Alarmnachricht übergeben werden kann
+- <b>Forging</b>: Beim Forging wird an die Steuerung eine PNIO-Alarmnachricht versendet, dass der Watchdog-Timer des IO-Devices abgelaufen ist und dieses nun in den IDLE-Zustand übergegangen ist. Es wird also eine Nachricht zum scheinbaren Verbindungsabbruch versendet.
 ```
 # Starten der Attacker shell
 mininet > xterm attacker

