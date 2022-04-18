@@ -62,12 +62,12 @@ sudo apt-get install openvswitch-testcontroller bridge-utils
 ## Installation von MiniCPS 2.0
  1. Klonen des Git-Repos zu MiniCPS 2.0
  2. Installieren der Python-Pakete: 
- ´´´
+ ```
  cd python3.7
  pip3 install -r requirements.txt
  cd ../python2.7
  pip install -r requirements.txt
- ´´´
+ ```
 
 ## Ausführen von MiniCPS Beispielprojekt Swat-S2
 
@@ -98,3 +98,39 @@ Im Ordner ```attacks``` finden sich noch die Angriffe:
 - ```replay.py``` (Replay-Attacke)
 - ```pnio-tampering.py``` (Tampering with Data und PNIO-Protocol)
 - ```forge.py``` (Forging-Attacke durch Einschleusen einer Alarmnachricht)
+
+## Angriffe
+Im MiniCPS 2.0 Beispielprojekt können zwei Arten von Angriffen ausgeführt werden, die sich unter anderem durch ihre Initialisierung in MiniCPS 2.0 unterscheiden. Der Benutzer sieht vorerst nur durch die Scada-Anwendung, dass das System eine Fehlfunktion besitzt. Angegriffen werden standardmäßig die Verbindung zwischen PLC1 und Dev3/LIT101 durch den Angreiferhost. Möchte man die Angriffe genauer analysieren und verstehen, sollte man sich zu Beginn eine Wireshark-Session pro Host öffnen. Dies kann man entweder direkt über die MiniNet-CLI machen oder über das Linux-System.
+### Während Verbindungsaufbau
+Angriffe, die den Verbindungsaufbau einer ProfiNet-Verbindung zwischen Feldgerät und Steuerung angreifen, werden im Startkommando spezifiziert und der Angriff findet ohne weitere Aktionen des Benutzers statt. Der Angriff wird zu Beginn gestartet. Vorerst exisitieren zwei Angriffe:
+- <b>DCP-Tampering / DoS</b>: Bei diesem Angriff, wird das Gerät falsch konfiguriert, sodass ein weiterer Verbindungsaufbau nicht möglich ist. Die Gerätefunktionalität kann also in dieser Zeit nicht genutzt werden (DoS). Der Angriff geschieht über das Verändern einer DCP-Konfigurationsnachricht. Dabei wird dem Gerät eine andere IP Adresse zugewiesen. 
+```
+    make swat-s2-dcp-tamp
+```
+- <b>RPC-Tampering</b>: Beim RPC-Tampering wird der Verbindungsaufbau leicht verändert. Dabei ist der Verbindungsaufbau zwar erfolgreich, allerdings ändert der Angreifer den WatchDog-Factor ab, sodass der Watchdog-Timer eines IO-Devices länger als definiert ist. Dadurch könnten zukünfig einfach MitM-Angriffe während des Datenaustauschs stattfinden. 
+```
+    make swat-s2-rpc-tamp
+```
+### Während Datenaustausch
+Angriffe, die während des Verbindungsaustauschs sind, müssen vom Anwender manuell gestartet werden. Hierfür öffnet über die MiniNet-Shell ein Xterm-Shellfenster auf dem Angreiferhost. Über dieses kann er die folgenden Angriffe ausführen: 
+- <b>Forging</b>: Beim Forging wird an die Steuerung eine PNIO-Alarmnachricht versendet, dass der Watchdog-Timer des IO-Devices abgelaufen ist und dieses nun in den IDLE-Zustand übergegangen ist. Es wird also eine Nachricht zum scheinbaren Verbindungsabbruch versendet. 
+```
+# Starten der Attacker shell
+mininet > xterm attacker
+# Attacker-Shell
+sudo python ./attacks/forging/alarm_injection.py
+```
+- <b>Replay</b>: Beim Replay wird eine bekannte Angriffsmethode verwendet, die oft bei ICS eingesetzt wird: Einschleusen von bereits aufgenommenen Datennachrichten, um einen alten Zustand im System zu propagieren. Hierzu wurde zuvor eine Kommunikation zwischen PLC1 und DEV3 aufgezeichnet und nach PNIO-RT-Nachrichten gefiltert (```./attacks/replay/sniff```). Wird Angriff gestartet, werden den beiden Verbindungspartnern die zuvor aufgezeichneten Nachrichten zugestellt. 
+```
+# Starten der Attacker shell
+mininet > xterm attacker
+# Attacker-Shell
+sudo python ./attacks/replay/replay.py
+```
+- <b>PNIO-Tampering</b>: Beim PNIO-Tampering wird eine PNIO-Nachricht abgefangen und alle Datenwerte auf 0 gesetzt. Dieser Angriff lässt sich relativ schwer in der Scada-Anwendung nachvollziehen (aus dem Grund wie ProfiNet-Simulation und MiniCPS verbunden sind -> Updaterate der PN-Simulation viel höher als die der MiniCPS-Anwendung). 
+```
+# Starten der Attacker shell
+mininet > xterm attacker
+# Attacker-Shell
+sudo python ./attacks/data_tampering/pnio_tampering.py
+```
