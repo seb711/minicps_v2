@@ -24,7 +24,7 @@ def get_alarm_msg(dst, src):
     )
 
     alarm_header = Alarm_Low(
-        RtaSdu=rta_pdu,
+        RTA_SDU=rta_pdu,
         AlarmDstEndpoint=3,
         AlarmSrcEndpoint=3,
         PDUTypeType=0x01,

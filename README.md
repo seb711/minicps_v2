@@ -1,5 +1,5 @@
 # MINICPS Version 2
-
+MiniCPS kann entweder manuell installiert werden in einer eigenen VM oder für die Zeit der Bachelorarbeit wurde eine Azure VM erstellt, um ohne weitere Konfiguration das Projekt zu testen. Siehe hierzu Kapitel "Shortcut - Azure VM"
 ## Vorbereitung
 Zur Installation kann entweder die schon vorbereitete Virtual Machine verwendet werden, die unter [LINK EINFÜGEN] zu finden ist oder eine neue virtuelle Maschine angelegt werden. Als Basis dient hier die virtuelle Maschine von MiniNet mit Ubuntu 18.4, die unter <a href="https://github.com/mininet/mininet/releases/download/2.3.0/mininet-2.3.0-210211-ubuntu-18.04.5-server-amd64-ovf.zip">MiniNet VM</a> zu finden ist. (Der VM wurden in der Konfiguration 4GB Arbeitsspeicher und 3 Kerne zur Verfügung gestellt. 2GB RAM sollten ausreichend sein, bei der Leistung sollte aber nicht gespart werden.)
 
@@ -59,6 +59,13 @@ sudo apt-get install sqlite3 libsqlite3-dev
 sudo apt-get install openvswitch-testcontroller bridge-utils
 ```
 
+6. In einzelnen Fällen wird die cpppo-Bibliothek nicht richtig über pip installiert. Dann kann es direkt über GIT installiert werden mit:  
+```
+git clone git@github.com:pjkundert/cpppo.git
+cd cpppo
+python setup.py install
+```
+
 ## Installation von MiniCPS 2.0
  1. Klonen des Git-Repos zu MiniCPS 2.0
  2. Installieren der Python-Pakete: 
@@ -68,6 +75,13 @@ sudo apt-get install openvswitch-testcontroller bridge-utils
  cd ../python2.7
  pip install -r requirements.txt
  ```
+
+## Shortcut - Azure VM
+Es steht eine Azure-VM zur Verfügung, auf der obige Schritte alle ausgeführt wurden und auch die aktuelle MiniCPS 2.0 Version installiert ist. Es muss nurnoch eine Verbindung via Putty mit X11-Forwarding aufgebaut werden. Allerdings ist die VM sehr sparsam konfiguriert, weshalb die Ausführung sehr lange dauert und es zu Timing-Exceptions kommen kann. 
+
+IP: 20.113.189.160 <br/>
+Username: sebkosak <br/>
+Password: Bachelor2021! <br/>
 
 ## Ausführen von MiniCPS Beispielprojekt Swat-S2
 
@@ -113,24 +127,24 @@ Angriffe, die den Verbindungsaufbau einer ProfiNet-Verbindung zwischen Feldgerä
 ```
 ### Während Datenaustausch
 Angriffe, die während des Verbindungsaustauschs sind, müssen vom Anwender manuell gestartet werden. Hierfür öffnet über die MiniNet-Shell ein Xterm-Shellfenster auf dem Angreiferhost. Über dieses kann er die folgenden Angriffe ausführen: 
-- <b>Forging</b>: Beim Forging wird an die Steuerung eine PNIO-Alarmnachricht versendet, dass der Watchdog-Timer des IO-Devices abgelaufen ist und dieses nun in den IDLE-Zustand übergegangen ist. Es wird also eine Nachricht zum scheinbaren Verbindungsabbruch versendet. 
+- <b>Forging</b>: Beim Forging wird an die Steuerung eine PNIO-Alarmnachricht versendet, dass der Watchdog-Timer des IO-Devices abgelaufen ist und dieses nun in den IDLE-Zustand übergegangen ist. Es wird also eine Nachricht zum scheinbaren Verbindungsabbruch versendet. Für diesen Angriff muss allerdings die Scapy-Bibliothek leicht geändert werden, da sonst keine Payload der Alarmnachricht übergeben werden kann
 ```
 # Starten der Attacker shell
 mininet > xterm attacker
 # Attacker-Shell
-sudo python ./attacks/forging/alarm_injection.py
+sudo python3 ./attacks/forging/alarm_injection.py
 ```
 - <b>Replay</b>: Beim Replay wird eine bekannte Angriffsmethode verwendet, die oft bei ICS eingesetzt wird: Einschleusen von bereits aufgenommenen Datennachrichten, um einen alten Zustand im System zu propagieren. Hierzu wurde zuvor eine Kommunikation zwischen PLC1 und DEV3 aufgezeichnet und nach PNIO-RT-Nachrichten gefiltert (```./attacks/replay/sniff```). Wird Angriff gestartet, werden den beiden Verbindungspartnern die zuvor aufgezeichneten Nachrichten zugestellt. 
 ```
 # Starten der Attacker shell
 mininet > xterm attacker
 # Attacker-Shell
-sudo python ./attacks/replay/replay.py
+sudo python3 ./attacks/replay/replay.py
 ```
 - <b>PNIO-Tampering</b>: Beim PNIO-Tampering wird eine PNIO-Nachricht abgefangen und alle Datenwerte auf 0 gesetzt. Dieser Angriff lässt sich relativ schwer in der Scada-Anwendung nachvollziehen (aus dem Grund wie ProfiNet-Simulation und MiniCPS verbunden sind -> Updaterate der PN-Simulation viel höher als die der MiniCPS-Anwendung). 
 ```
 # Starten der Attacker shell
 mininet > xterm attacker
 # Attacker-Shell
-sudo python ./attacks/data_tampering/pnio_tampering.py
+sudo python3 ./attacks/data_tampering/pnio_tampering.py
 ```

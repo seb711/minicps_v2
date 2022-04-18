@@ -6,7 +6,7 @@ PYTHON_OPTS =
 # SWAT-S2 {{{1
 
 swat-s2-init:
-	git pull; cd examples/swat-s2/minicps/profinet_device; cmake -B build -S p-net; cmake --build build --target install; cd build; chmod +x set_network_parameters; cd ../../..
+	git pull; cd examples/swat-s2/minicps/profinet_device; cmake -B build -S p-net; cmake --build build --target install; cd build; chmod +x set_network_parameters; cd ../../..; sudo python init.py;
 
 swat-s2-clean:
 	cd examples/swat-s2; chmod +x ./restart.sh; ./restart.sh; cd ../..
